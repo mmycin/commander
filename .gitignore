@@ -6,3 +6,4 @@ build
 *spec
 *.exe
 assets
+model.txt

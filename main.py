@@ -2,9 +2,12 @@ from os import error
 from typing import Final
 import typer
 import subprocess
+from pathlib import Path
+import sys
 
 app = typer.Typer()
-model_file_name: Final[str] = "model.txt"
+base_path = Path(sys.executable).parent.parent
+model_file_name: Final[str] = str(base_path / "model.txt")
 
 def remove_newlines(s, n=3):
     count = 0
