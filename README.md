@@ -1,6 +1,6 @@
 # AI Commander
 
-A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to generate—and even execute—Nushell commands for you. Save time, reduce context-switching, and let AI handle the nitty-gritty of terminal work. Created with ❤️ by Mycin.
+A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to generate—and even execute—Terminal commands for you. Save time, reduce context-switching, and let AI handle the nitty-gritty of terminal work. Created with ❤️ by Mycin.
 
 ---
 
@@ -14,7 +14,6 @@ A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to
 6. [Installation](#installation)
 7. [Usage](#usage)
 8. [Commands Cheat Sheet](#commands-cheat-sheet)
-9. [Configuration & Models](#configuration--models)
 10. [Limitations & Best Practices](#limitations--best-practices)
 11. [Contributing](#contributing)
 12. [License](#license)
@@ -23,9 +22,9 @@ A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to
 
 ## Overview
 
-`AI Commander` is a **Nushell-focused** CLI tool that:
+`AI Commander` is a **Terminal-focused** CLI tool that:
 
-* **Generates** Nushell commands from your natural-language prompts.
+* **Generates** Terminal commands from your natural-language prompts.
 * **Optionally runs** those commands automatically (if you trust the AI).
 * Works **completely offline** using Ollama’s local LLMs—no internet, no shepherd from the cloud.
 * Supports **multiple models**, letting you choose a smaller, faster model for casual tasks or a beefier one for complex scripting.
@@ -50,10 +49,10 @@ A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to
 
 ## Features
 
-* 🎯 **Natural Language → Nushell**: Describe what you need in plain English, and AI Commander outputs the exact command.
-* 🤖 **AI Agent Mode**: Automatically execute the generated Nushell command—no copy/paste required.
+* 🎯 **Natural Language → Terminal**: Describe what you need in plain English, and AI Commander outputs the exact command.
+* 🤖 **AI Agent Mode**: Automatically execute the generated Terminal command—no copy/paste required.
 * ⚡ **Model Selection**: Pick from your installed Ollama models (e.g., `gemma3:1b`, `deepseek-r1:1.5b`, `llama3.2:latest`).
-* 🔄 **Chaining & Complex Ops**: If a task needs multiple commands (compile & run, unzip & list), AI Commander will chain them—one per line, strict Nushell syntax.
+* 🔄 **Chaining & Complex Ops**: If a task needs multiple commands (compile & run, unzip & list), AI Commander will chain them—one per line, strict Terminal syntax.
 * 🔍 **Dry Run & Flags**: Preview before executing (because AI occasionally “hallucinates” and types `rm -rf /` by accident—just kidding, it’s sanitised… mostly).
 * 📦 **Single Binary Option**: Build an executable with PyInstaller for an ultra-streamlined experience.
 
@@ -65,10 +64,10 @@ A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to
 flowchart TD
   A[📝 User Prompt] --> B[🤖 Select Ollama Model]
   B --> C[🔍 Parse Prompt & Compose Final System Prompt]
-  C --> D[⚙️ API Call: Ollama LLM Generates Nushell Command]
+  C --> D[⚙️ API Call: Ollama LLM Generates Terminal Command]
   D --> E[🔄 Format & Validate Command]
   E --> F{❓ Run Mode?}
-  F -->|Yes| G[▶️ Execute Command in Nushell]
+  F -->|Yes| G[▶️ Execute Command in the Terminal]
   F -->|No| H[📋 Output Command Only]
   G --> I[📊 Show Output / Errors]
   H --> I[✅ End]
@@ -79,9 +78,9 @@ flowchart TD
 2. **Select Model**
    AI Commander picks your configured Ollama model (e.g., `deepseek-r1:1.5b`).
 3. **Parse & Compose**
-   The prompt is sanitized and combined with a system message that enforces “strict Nushell command only” rules.
+   The prompt is sanitized and combined with a system message that enforces “strict Terminal command only” rules.
 4. **Generate**
-   Ollama’s LLM spins out a precise Nushell pipeline:
+   Ollama’s LLM spins out a precise Terminal pipeline:
 
    ```
    ls *.log | where type == "file" | each { rm $it.name }
@@ -90,7 +89,7 @@ flowchart TD
    The tool checks for absolute paths, extra whitespace, or forbidden characters (spoiler: no backticks or markdown).
 6. **Run?**
 
-   * If you invoked `commander run`, it submits the command to your local Nushell shell.
+   * If you invoked `commander run`, it submits the command to your local Terminal shell.
    * If you used `commander gen`, it simply prints the command to STDOUT.
 7. **Show & Done**
    You either copy & paste the command, or watch it execute live. No middleman.
@@ -107,8 +106,8 @@ Before rolling with AI Commander, ensure your system is up to snuff:
 
 * **Operating System**
 
-  * Windows 10+ (PowerShell & Nushell installed)
-  * macOS 10.14+ (Homebrew or downloadable Nushell binary)
+  * Windows 10+ (PowerShell & Terminal installed)
+  * macOS 10.14+ (Homebrew or downloadable Terminal binary)
   * Linux (Ubuntu 18.04+ / Fedora / Arch)
 
 * **Python**: ≥ 3.11
@@ -124,9 +123,9 @@ Before rolling with AI Commander, ensure your system is up to snuff:
   * Install from [ollama.com](https://ollama.com) (Windows: use the installer; macOS/Linux: use brew or official binary).
   * Ensure you have at least one model pulled (e.g., `ollama pull llama3.2:latest`).
 
-* **Nushell**:
+* **Terminal (Optional)**:
 
-  * Install via [nushell.dev/install](https://www.nushell.dev/install).
+  * Install via [Terminal.dev/install](https://www.Terminal.dev/install).
   * Ensure that `nu` is in your `PATH`.
 
 * **Package Manager**:
@@ -208,8 +207,8 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  gen      Generate a Nushell command from a natural-language prompt.
-  run      Generate and execute a Nushell command.
+  gen      Generate a Terminal command from a natural-language prompt.
+  run      Generate and execute a Terminal command.
   init     Initialize or switch Ollama model.
   model    Show current and available Ollama models.
   set      Change the active Ollama model.
@@ -261,7 +260,7 @@ commander run "search for all .log files in logs/ and delete them"
   ```
   ls logs/*.log | each { rm $it.name }
   ```
-* **Executed**: AI Commander sends that pipeline to your Nushell shell. Watch the magic happen.
+* **Executed**: AI Commander sends that pipeline to your Terminal shell. Watch the magic happen.
 
 ---
 
@@ -297,31 +296,44 @@ Use the **first few letters** of a model (e.g., `gem`, `deep`, `llama`)—as lon
 
 ---
 
-## Commands Cheat Sheet
-
-> “For those who like to live dangerously—always double-check AI suggestions!”
-
-| Task                               | Prompt Example                          | Generated Command(s)                   |                       |
-| ---------------------------------- | --------------------------------------- | -------------------------------------- | --------------------- |
-| List all files (detailed)          | `list files`                            | `ls -al`                               |                       |
-| Show only directories              | `list only directories`                 | \`ls`                                   | where type == "dir"\` |
-| Create nested folders              | `make dir project/src/utils`            | `mkdir project/src/utils`              |                       |
-| Compile & run a C program          | `run main.c`                            | `gcc main.c -o main` <br>`./main`      |                       |
-| Move a file into `backup/`         | `move data.txt to backup`               | `mv data.txt backup/`                  |                       |
-| Remove all `*.log`                 | `delete all .log files`                 | `rm -rf *.log`                         |                       |
-| Count lines in `notes.txt`         | `how many lines in notes.txt`           | `open notes.txt \| lines \| length`    |                       |
-| Show disk usage                    | `check disk usage`                      | `du`                                   |                       |
-| Change permissions to 755 for a.sh | `make script.sh executable`             | `chmod +x script.sh`                   |                       |
-| Search for "TODO" in `app.rs`      | `find TODO in app.rs`                   | `grep TODO app.rs`                     |                       |
-| Zip the folder `logs/`             | `compress logs folder`                  | `zip -r logs.zip logs`                 |                       |
-| Unzip `archive.zip`                | `extract archive.zip`                   | `unzip archive.zip`                    |                       |
-| Initialize a Git repo              | `git init`                              | `git init`                             |                       |
-| Clone repository from URL          | `clone repo https://github.com/foo/bar` | `git clone https://github.com/foo/bar` |                       |
-| View `config.json`                 | `show config.json`                      | `open config.json`                     |                       |
-
-> **Note:** The above commands are illustrative. AI Commander often suggests more efficient Nushell pipelines (e.g., `ls | where extension == "log" | each { rm $it.name }`).
+Here’s a **refactored and enhanced version** of your `Commands Cheat Sheet` section with improved clarity, formatting, and tone — while preserving the Terminal vibe and adding a touch of friendliness:
 
 ---
+
+## 🧠 Commands Cheat Sheet
+
+> *"For those who like to live on the edge... Always double-check what your AI friend just told you to run!"*
+
+Here’s a quick glance at what Commander can do with just a few words from you. These prompts turn into real, working Terminal commands — ready to roll.
+
+| 🛠️ Task                      | 🗣️ Prompt Example                      | 🧾 Generated Command(s)                |                       |          |
+| ----------------------------- | --------------------------------------- | -------------------------------------- | --------------------- | -------- |
+| 📂 List all files (detailed)  | `list files`                            | `ls -al`                               |                       |          |
+| 📁 Show only directories      | `list only directories`                 | \`ls                                   | where type == "dir"\` |          |
+| 🏗️ Create nested folders     | `make dir project/src/utils`            | `mkdir project/src/utils`              |                       |          |
+| 🧑‍💻 Compile & run C program | `run main.c`                            | `gcc main.c -o main`<br>`./main`       |                       |          |
+| 📦 Move file to folder        | `move data.txt to backup`               | `mv data.txt backup/`                  |                       |          |
+| 🧹 Remove all `.log` files    | `delete all .log files`                 | `rm -rf *.log`                         |                       |          |
+| 🔢 Count lines in a file      | `how many lines in notes.txt`           | \`open notes.txt                       | lines                 | length\` |
+| 💽 Check disk usage           | `check disk usage`                      | `du`                                   |                       |          |
+| 🔐 Make script executable     | `make script.sh executable`             | `chmod +x script.sh`                   |                       |          |
+| 🔍 Search text in file        | `find TODO in app.rs`                   | `grep TODO app.rs`                     |                       |          |
+| 📦 Zip a folder               | `compress logs folder`                  | `zip -r logs.zip logs`                 |                       |          |
+| 📂 Unzip an archive           | `extract archive.zip`                   | `unzip archive.zip`                    |                       |          |
+| 🌀 Initialize Git repo        | `git init`                              | `git init`                             |                       |          |
+| 🧬 Clone a GitHub repo        | `clone repo https://github.com/foo/bar` | `git clone https://github.com/foo/bar` |                       |          |
+| 👁️ View JSON config file     | `show config.json`                      | `open config.json`                     |                       |          |
+
+---
+
+> **💡 Pro Tip:**
+> While these examples use basic commands, Commander can unleash Terminal's real power by chaining filters, pipes, and even loops. Example:
+
+```bash
+ls | where extension == "log" | each { rm $it.name }
+```
+
+Let me know if you want this exported to a Markdown file or visualized in a PDF!
 
 ## Limitations & Best Practices
 
@@ -337,7 +349,7 @@ Use the **first few letters** of a model (e.g., `gem`, `deep`, `llama`)—as lon
 
 3. **Model Knowledge Cutoff**
 
-   * Ollama’s local models are “frozen” snapshots. If Nushell introduces new commands after your model’s training date, AI Commander may suggest outdated syntax.
+   * Ollama’s local models are “frozen” snapshots. If Terminal introduces new commands after your model’s training date, AI Commander may suggest outdated syntax.
    * To mitigate:
 
      1. **Update your model** (`ollama pull llama3.2:latest`)
@@ -345,7 +357,7 @@ Use the **first few letters** of a model (e.g., `gem`, `deep`, `llama`)—as lon
 
 4. **Platform Differences**
 
-   * Though Nushell aims for cross-platform consistency, minor variations (e.g., `ls` flags on Windows vs. Linux) may occur.
+   * Though Terminal aims for cross-platform consistency, minor variations (e.g., `ls` flags on Windows vs. Linux) may occur.
    * If AI-generated commands fail, tweak manually.
 
 ---
