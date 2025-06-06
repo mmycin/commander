@@ -1,7 +1,5 @@
 # AI Commander
 
-![AI Commander Logo](assets/logo.png)
-
 A powerful, offline-capable CLI AI Agent that leverages Ollama’s local LLMs to generate—and even execute—Nushell commands for you. Save time, reduce context-switching, and let AI handle the nitty-gritty of terminal work. Created with ❤️ by Mycin.
 
 ---
