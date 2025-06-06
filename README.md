@@ -300,33 +300,35 @@ Here’s a **refactored and enhanced version** of your `Commands Cheat Sheet` se
 
 ---
 
-## 🧠 Commands Cheat Sheet
+The cheat sheet is mostly clear but has a few inconsistencies and formatting issues, particularly in the table. Here's a revised version with corrections for clarity, consistency, and accuracy, while maintaining the original structure and tone. I've fixed the table formatting, corrected the `ls | where type == "dir"` command (which isn't standard in most shells), and clarified some descriptions. I've also ensured all commands are accurate for a typical Unix-like terminal environment.
+
+---
+
+## Commands Cheat Sheet
 
 > *"For those who like to live on the edge... Always double-check what your AI friend just told you to run!"*
 
 Here’s a quick glance at what Commander can do with just a few words from you. These prompts turn into real, working Terminal commands — ready to roll.
 
-| 🛠️ Task                      | 🗣️ Prompt Example                      | 🧾 Generated Command(s)                |                       |          |
-| ----------------------------- | --------------------------------------- | -------------------------------------- | --------------------- | -------- |
-| 📂 List all files (detailed)  | `list files`                            | `ls -al`                               |                       |          |
-| 📁 Show only directories      | `list only directories`                 | \`ls                                   | where type == "dir"\` |          |
-| 🏗️ Create nested folders     | `make dir project/src/utils`            | `mkdir project/src/utils`              |                       |          |
-| 🧑‍💻 Compile & run C program | `run main.c`                            | `gcc main.c -o main`<br>`./main`       |                       |          |
-| 📦 Move file to folder        | `move data.txt to backup`               | `mv data.txt backup/`                  |                       |          |
-| 🧹 Remove all `.log` files    | `delete all .log files`                 | `rm -rf *.log`                         |                       |          |
-| 🔢 Count lines in a file      | `how many lines in notes.txt`           | \`open notes.txt                       | lines                 | length\` |
-| 💽 Check disk usage           | `check disk usage`                      | `du`                                   |                       |          |
-| 🔐 Make script executable     | `make script.sh executable`             | `chmod +x script.sh`                   |                       |          |
-| 🔍 Search text in file        | `find TODO in app.rs`                   | `grep TODO app.rs`                     |                       |          |
-| 📦 Zip a folder               | `compress logs folder`                  | `zip -r logs.zip logs`                 |                       |          |
-| 📂 Unzip an archive           | `extract archive.zip`                   | `unzip archive.zip`                    |                       |          |
-| 🌀 Initialize Git repo        | `git init`                              | `git init`                             |                       |          |
-| 🧬 Clone a GitHub repo        | `clone repo https://github.com/foo/bar` | `git clone https://github.com/foo/bar` |                       |          |
-| 👁️ View JSON config file     | `show config.json`                      | `open config.json`                     |                       |          |
+| 🛠️ Task                      | 🗣️ Prompt Example                      | 🧾 Generated Command(s)                |
+|------------------------------|---------------------------------------|---------------------------------------|
+| 📂 List all files (detailed)  | `list files`                          | `ls -al`                             |
+| 📁 Show only directories      | `list only directories`               | `ls -d */`                           |
+| 🏗️ Create nested folders     | `make dir project/src/utils`          | `mkdir -p project/src/utils`         |
+| 🧑‍💻 Compile & run C program | `run main.c`                          | `gcc main.c -o main && ./main`       |
+| 📦 Move file to folder        | `move data.txt to backup`             | `mv data.txt backup/`                |
+| 🧹 Remove all `.log` files    | `delete all .log files`               | `rm *.log`                           |
+| 🔢 Count lines in a file      | `how many lines in notes.txt`         | `wc -l notes.txt`                    |
+| 💽 Check disk usage           | `check disk usage`                    | `df -h`                              |
+| 🔐 Make script executable     | `make script.sh executable`           | `chmod +x script.sh`                 |
+| 🔍 Search text in file        | `find TODO in app.rs`                 | `grep "TODO" app.rs`                 |
+| 📦 Zip a folder               | `compress logs folder`                | `zip -r logs.zip logs`               |
+| 📂 Unzip an archive           | `extract archive.zip`                 | `unzip archive.zip`                  |
+| 🌀 Initialize Git repo        | `git init`                            | `git init`                           |
+| 🧬 Clone a GitHub repo        | `clone repo https://github.com/foo/bar` | `git clone https://github.com/foo/bar` |
+| 👁️ View JSON config file     | `show config.json`                    | `cat config.json`                    |
 
----
-
-> **💡 Pro Tip:**
+**💡 Pro Tip:**
 > While these examples use basic commands, Commander can unleash Terminal's real power by chaining filters, pipes, and even loops. Example:
 
 ```bash
