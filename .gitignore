@@ -6,6 +6,5 @@ build
 *spec
 *.exe
 assets
-model.txt
 .env
 test*
