@@ -7,3 +7,5 @@ build
 *.exe
 assets
 model.txt
+.env
+test*
