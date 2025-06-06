@@ -1,13 +1,20 @@
 from os import error
 from typing import Final
+from typing_extensions import List
 import typer
 import subprocess
 from pathlib import Path
 import sys
+import re
 
 app = typer.Typer()
+
+# Production
 base_path = Path(sys.executable).parent.parent
 model_file_name: Final[str] = str(base_path / "model.txt")
+
+# Dev 
+# model_file_name = "model.txt"
 
 def remove_newlines(s, n=3):
     count = 0
@@ -79,6 +86,7 @@ def generate_command(command: str) -> str | None:
             
         result = subprocess.run(["ollama", "run", modelName, prompt], capture_output=True, text=True)
         output = result.stdout
+        output = format(output)
         output = remove_newlines(output)
     
         if output.startswith("```") or output.endswith("```\n"):
@@ -98,27 +106,73 @@ def gen(command: str):
 @app.command(help="Provide aetailed information about your situation and the AI Agent will do the process.")
 def run(command: str):
     """This is a command for running a Nushell Command for given input"""
-    cmd = generate_command(command)
-    if cmd is not None:
-        try:
-            subprocess.run(["nu", "-c", cmd], shell=True)
-            print("Success")
-        except:
-            print("Incorrect command. Try again")
-    else:
-        pass
+    try:
+        cmd = generate_command(command)
+        if cmd is not None:
+            try:
+                subprocess.run(["nu", "-c", cmd], shell=True)
+                print("Success")
+            except:
+                print("Incorrect command. Try again")
+        else:
+            pass
+    except:
+        print("Somthing went wrong.")    
         
 @app.command(help="Provide a valid Ollama Model installed in your system like `llama3.2@latest`, `gemma3.2@latest` etc")
 def set(model: str):
     """This is a command for changing the AI Ollama LLM Model"""
-    try:    
+    try:
+        model_list = list_model()
+
+        # Find the first matching model (partial match)
+        matching_model = next((m for m in model_list if model in m), None)
+
+        if not matching_model:
+            print(f"Can't set model to '{model}'. No model found.")
+            show_available_models(model_list)
+            sys.exit(1)
+
         with open(model_file_name, "w") as file:
-            file.write(model)
-        print(f"Model Successfully Set to: {model}")
-    except:
-        print("Could not load the model")
+            file.write(matching_model)
+
+        print(f"Model successfully set to: {matching_model}")
+
+    except Exception as e:
+        print(f"Could not load the model. Error: {e}")
+
         
-@app.command(help="Shows the current model")
+def list_model() -> List[str]: 
+    try:
+        result = subprocess.run(["ollama", "list"], capture_output=True, text=True, shell=True)
+        
+        # Decode and split lines
+        lines = result.stdout.strip().split("\n")
+        
+        # Skip the header
+        model_lines = lines[1:]
+        
+        # Extract model names
+        model_names = [line.split()[0] for line in model_lines if line.strip()]
+        return model_names
+    except:
+        print("You don't have Ollama Setup to your path.")
+        return []
+        
+def format(text: str) -> str:
+    if text.__contains__("<think>") or text.__contains__("</think>"):
+        compiler: Final[re.Pattern] = re.compile(r"<think>.*?</think>\s*", re.DOTALL)
+        output: Final[str] = compiler.sub("", text).strip()
+        return output
+    return text
+        
+def show_available_models(models: List[str]):
+    print("\nAvailable Models:")
+    print("=================")
+    for i, name in enumerate(models, start=1):
+        print(f"{i}. {name}")
+        
+@app.command(help="Shows the current model and available model list")
 def model():
     with open(model_file_name, "r") as file:
         model_name = file.read()
@@ -134,13 +188,13 @@ def model():
     model_lines = lines[1:]
     
     # Extract model names
-    model_names = [line.split()[0] for line in model_lines if line.strip()]
+    model_names = list_model()
     
+    if not model_file_name:
+        print("Something went Wrong")
+    else:
     # Print formatted output
-    print("\nAvailable Models:")
-    print("=================")
-    for i, name in enumerate(model_names, start=1):
-        print(f"{i}. {name}")
+        show_available_models(model_names)
 
 
 if __name__ == "__main__":
